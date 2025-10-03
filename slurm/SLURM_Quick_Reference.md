@@ -3,6 +3,7 @@
 ## Essential Commands
 
 ### Check Status
+
 ```bash
 # Cluster status
 sinfo
@@ -18,6 +19,7 @@ scontrol show job <job_id>
 ```
 
 ### Submit Jobs
+
 ```bash
 # Submit script
 sbatch job_script.sh
@@ -33,6 +35,7 @@ srun -p interactive -t 1:00:00 --mem=8G --pty bash
 ```
 
 ### Manage Jobs
+
 ```bash
 # Cancel job
 scancel <job_id>
@@ -47,6 +50,7 @@ scancel --name="my_job"
 ## Common Job Script Headers
 
 ### Basic Job
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=my_job
@@ -60,6 +64,7 @@ scancel --name="my_job"
 ```
 
 ### GPU Job
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=gpu_job
@@ -74,6 +79,7 @@ scancel --name="my_job"
 ```
 
 ### Array Job
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=array_job
@@ -90,21 +96,25 @@ scancel --name="my_job"
 ## Resource Specifications
 
 ### Time Formats
+
 - `--time=01:30:00` (1 hour 30 minutes)
 - `--time=30:00` (30 minutes)
 - `--time=1-12:30:00` (1 day 12 hours 30 minutes)
 
 ### Memory
+
 - `--mem=8G` (8 GB total)
 - `--mem-per-cpu=2G` (2 GB per CPU)
 - `--mem-per-node=32G` (32 GB per node)
 
 ### CPUs and Tasks
+
 - `--cpus-per-task=4` (4 CPUs per task)
 - `--ntasks=8` (8 total tasks)
 - `--nodes=2` (2 nodes)
 
 ### GPU
+
 - `--gres=gpu:1` (1 GPU)
 - `--gres=gpu:2` (2 GPUs)
 - `--gres=gpu:v100:1` (1 V100 GPU)
@@ -134,6 +144,7 @@ sacct -u $USER --starttime=2024-01-01
 ## Common Patterns
 
 ### Submit and Monitor
+
 ```bash
 # Submit job
 JOB_ID=$(sbatch job_script.sh | awk '{print $4}')
@@ -146,6 +157,7 @@ tail -f output_${JOB_ID}.txt
 ```
 
 ### Array Job Pattern
+
 ```bash
 #!/bin/bash
 #SBATCH --array=1-100
@@ -156,6 +168,7 @@ python process.py --input data_${TASK_ID}.txt --output result_${TASK_ID}.txt
 ```
 
 ### Dependency Jobs
+
 ```bash
 # Submit first job
 JOB1=$(sbatch job1.sh | awk '{print $4}')

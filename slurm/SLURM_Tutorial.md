@@ -1,6 +1,7 @@
 # SLURM Tutorial: Complete Guide with Shell Examples
 
 ## Table of Contents
+
 1. [What is SLURM?](#what-is-slurm)
 2. [Basic SLURM Commands](#basic-slurm-commands)
 3. [Job Submission](#job-submission)
@@ -17,6 +18,7 @@
 **SLURM (Simple Linux Utility for Resource Management)** is a job scheduler and resource manager for Linux clusters. It manages computational resources and schedules jobs to run on available nodes.
 
 ### Key Concepts:
+
 - **Job**: A computational task submitted to the cluster
 - **Node**: A physical computer in the cluster
 - **Partition**: A group of nodes with specific characteristics
@@ -25,6 +27,7 @@
 ## Basic SLURM Commands
 
 ### Check Cluster Status
+
 ```bash
 # View cluster information
 sinfo
@@ -40,6 +43,7 @@ scontrol show nodes
 ```
 
 ### Check Your Jobs
+
 ```bash
 # List your jobs
 squeue -u $USER
@@ -55,6 +59,7 @@ scontrol show job <job_id>
 ```
 
 ### Cancel Jobs
+
 ```bash
 # Cancel a specific job
 scancel <job_id>
@@ -69,6 +74,7 @@ scancel --name="my_job"
 ## Job Submission
 
 ### Basic Job Submission
+
 ```bash
 # Submit a simple job
 sbatch job_script.sh
@@ -87,6 +93,7 @@ sbatch -c 4 job_script.sh
 ```
 
 ### Command Line Job Submission
+
 ```bash
 # Run a single command
 srun -p gpu -t 10:00 --mem=4G python script.py
@@ -101,6 +108,7 @@ srun -p interactive -t 2:00:00 --mem=4G --pty bash
 ## Job Scripts
 
 ### Basic Job Script Template
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=my_job
@@ -125,6 +133,7 @@ python my_script.py
 ```
 
 ### GPU Job Script
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=gpu_job
@@ -146,6 +155,7 @@ python train_model.py
 ```
 
 ### MPI Job Script
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=mpi_job
@@ -168,6 +178,7 @@ mpirun -np 8 ./my_mpi_program
 ## Resource Management
 
 ### Memory Management
+
 ```bash
 # Request specific memory amount
 #SBATCH --mem=8G
@@ -180,6 +191,7 @@ mpirun -np 8 ./my_mpi_program
 ```
 
 ### CPU Management
+
 ```bash
 # Request specific number of CPUs
 #SBATCH --cpus-per-task=4
@@ -192,6 +204,7 @@ mpirun -np 8 ./my_mpi_program
 ```
 
 ### Time Management
+
 ```bash
 # Time format: HH:MM:SS
 #SBATCH --time=01:30:00
@@ -206,6 +219,7 @@ mpirun -np 8 ./my_mpi_program
 ## Job Monitoring
 
 ### Check Job Status
+
 ```bash
 # Basic job status
 squeue -u $USER
@@ -221,6 +235,7 @@ sacct -j <job_id> --format=JobID,JobName,State,ExitCode,Start,End,Elapsed,MaxRSS
 ```
 
 ### Monitor Job Output
+
 ```bash
 # Follow job output in real-time
 tail -f output_<job_id>.txt
@@ -233,6 +248,7 @@ cat error_<job_id>.txt
 ## Array Jobs
 
 ### Basic Array Job
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=array_job
@@ -253,6 +269,7 @@ python process_data.py --input data_${TASK_ID}.txt --output result_${TASK_ID}.tx
 ```
 
 ### Array Job with Step Size
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=array_step
@@ -273,6 +290,7 @@ echo "Processing task $TASK_ID"
 ## Interactive Jobs
 
 ### Interactive Session
+
 ```bash
 # Request interactive session
 srun -p interactive -t 2:00:00 --mem=8G --cpus-per-task=4 --pty bash
@@ -287,6 +305,7 @@ srun -p compute -w node001 -t 1:00:00 --mem=8G --pty bash
 ## Common Use Cases
 
 ### 1. Machine Learning Training
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=ml_training
@@ -311,6 +330,7 @@ python train_model.py --epochs 100 --batch-size 64 --gpus 2
 ```
 
 ### 2. Scientific Computing
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=scientific_compute
@@ -331,6 +351,7 @@ mpirun -np 16 ./scientific_program input.dat output.dat
 ```
 
 ### 3. Data Processing Pipeline
+
 ```bash
 #!/bin/bash
 #SBATCH --job-name=data_pipeline
@@ -356,6 +377,7 @@ python generate_report.py
 ### Common Issues and Solutions
 
 #### 1. Job Pending Forever
+
 ```bash
 # Check why job is pending
 scontrol show job <job_id>
@@ -368,6 +390,7 @@ sinfo -N -l
 ```
 
 #### 2. Job Fails Immediately
+
 ```bash
 # Check error logs
 cat error_<job_id>.txt
@@ -380,6 +403,7 @@ ls -la input_files/
 ```
 
 #### 3. Out of Memory Errors
+
 ```bash
 # Increase memory request
 #SBATCH --mem=16G
@@ -389,6 +413,7 @@ ls -la input_files/
 ```
 
 #### 4. Time Limit Exceeded
+
 ```bash
 # Increase time limit
 #SBATCH --time=4:00:00
@@ -416,21 +441,25 @@ scontrol show job <job_id> | grep -i depend
 ## Best Practices
 
 ### 1. Resource Estimation
+
 - Always request slightly more resources than needed
 - Use `sacct` to analyze past job resource usage
 - Start with conservative estimates and adjust
 
 ### 2. Job Organization
+
 - Use descriptive job names
 - Organize output files in directories
 - Use job arrays for similar tasks
 
 ### 3. Error Handling
+
 - Always check error logs
 - Use proper exit codes in scripts
 - Implement checkpointing for long jobs
 
 ### 4. Efficiency Tips
+
 - Use appropriate partition for your job type
 - Avoid requesting more resources than needed
 - Use job arrays instead of many individual jobs
